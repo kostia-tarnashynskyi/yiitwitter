@@ -10,7 +10,11 @@ return array(
 	'name'=>'My Web Application',
 
 	// preloading 'log' component
-	'preload'=>array('log'),
+	'preload'=>array(
+		'log',
+		'bootstrap'
+	),
+	
 
 	// autoloading model and component classes
 	'import'=>array(
@@ -78,6 +82,17 @@ return array(
 				*/
 			),
 		),
+		'bootstrap' => array(
+			'class' => 'application.vendor.clevertech.yii-booster.src.components.Bootstrap',
+		),
+		'viewRenderer'=>array(
+			'class' => 'application.vendor.delfit.yii-haml.HamlViewRenderer',
+			// delete options below in production
+			'ugly' => false,
+			'style' => 'nested',
+			'debug' => 0,
+			'cache' => false,
+	  	),
 	),
 
 	// application-level parameters that can be accessed

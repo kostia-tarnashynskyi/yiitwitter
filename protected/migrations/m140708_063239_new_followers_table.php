@@ -1,74 +1,79 @@
-<?php
-
-class m140708_063239_new_followers_table extends CDbMigration
-{
-	/*
-	public function up()
-	{
-	}
-
-	public function down()
-	{
-		echo "m140708_063239_new_followers_table does not support migration down.\n";
-		return false;
-	}
-	*/
-	
-	// Use safeUp/safeDown to do migration with transaction
-	public function safeUp()
-	{
-		$this->createTable( 
-			'followers', 
-			[
-				'account_id'=>'int(20) UNSIGNED NOT NULL',
-				'user_id'=>'int(20) UNSIGNED NOT NULL',
-				'create_date'=>'timestamp DEFAULT CURRENT_TIMESTAMP',
-				'greeting'=>'int(1) UNSIGNED DEFAULT 0',
-				'PRIMARY KEY (account_id, user_id)',
-			],  
-			'ENGINE=InnoDB DEFAULT CHARSET=utf8'
-		);
-
-		// внешний ключ связи с аккаунтом
-		$this->addForeignKey(
-			'fk_followers_table_account_id', 
-			// дочерняя таблица
-			'followers', 
-			// дочернее поле
-			'account_id',
-			// родительская таблица 
-			'accounts', 
-			// родительское поле
-			'account_id',
-			// действие при удалении 
-			'CASCADE', 
-			// действие при обновлении
-			'RESTRICT'
-		);
-
-		// внешний ключ связи с юзером
-		$this->addForeignKey(
-			'fk_followers_table_user_id', 
-			// дочерняя таблица
-			'followers', 
-			// дочернее поле
-			'user_id',
-			// родительская таблица 
-			'users', 
-			// родительское поле
-			'user_id',
-			// действие при удалении 
-			'CASCADE', 
-			// действие при обновлении
-			'RESTRICT'
-		);
-	}
-
-	public function safeDown()
-	{
-		$this->dropTable('followers');
-	}
-	
-}
-
-// $this->addForeignKey('fk1', 'table1', 'foreign_id', 'table2', 'id','CASCADE','CASCADE');
+!!!
+%html(xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en")
+	%head
+		/blueprint CSS framework
+		%meta(http-equiv="Content-Type" content="text/html; charset=utf-8")
+		%meta(name="language" content="en")
+		%link(rel="stylesheet" type="text/css" href="#{Yii::app()->request->baseUrl}/css/screen.css" media="screen, projection" )
+		%link(rel="stylesheet" type="text/css" href="#{Yii::app()->request->baseUrl}/css/print.css" media="print")
+		/[if lt IE 8]
+			%link(rel="stylesheet" type="text/css" href="#{Yii::app()->request->baseUrl}/css/ie.css" media="screen, projection" )
+		%link(rel="stylesheet" type="text/css" href="#{Yii::app()->request->baseUrl}/css/main.css")
+		%link(rel="stylesheet" type="text/css" href="#{Yii::app()->request->baseUrl}/css/form.css")
+		%title= CHtml::encode($this->pageTitle)
+	/head
+	%body
+		.container#page
+			#header
+				#logo= CHtml::encode(Yii::app()->name)
+			/header
+			//#mainmenu
+				:php
+					$this->widget('bootstrap.widgets.TbNavbar', array(
+						'brand' => Yii::t('lang_uk', 'Home'),
+						//'brandUrl' => '#',
+						'fixed' => false,
+						'type' => 'inverse',
+						'items' => array(
+							array(
+								'class' => 'bootstrap.widgets.TbMenu',
+								'items' => array(
+									array('label'=>'Первая', 'url'=>'/site/index'),
+									array('label'=>Yii::t('lang_uk', 'Notes'), 'url'=>array('/note')),
+									array('label'=>Yii::t('lang_uk', 'Login'), 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
+									array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest),
+									array('label'=>'Admin', 'url'=>array('/admin'), 'visible'=>!Yii::app()->user->isGuest),
+									array(
+										'label' => 'Dropdown',
+										'url' => '#',
+										'items' => array(
+											array('label' => 'Action', 'url' => '#'),
+											array('label' => 'Another action', 'url' => '#'),
+											array('label' => 'Something else here', 'url' => '#'),
+											'---',
+											array('label' => 'NAV HEADER'),
+											array('label' => 'Separated link', 'url' => '#'),
+											array('label' => 'One more separated link', 'url' => '#'),
+										)
+									),
+								)
+							)
+						)
+					));
+					// $this->widget('zii.widgets.CMenu',array(
+					// 	'items'=>array(
+					// 		array('label'=>Yii::t('lang_uk', 'Home'), 'url'=>array('/site/index')),
+					// 		array('label'=>'Contact', 'url'=>array('/site/contact')),
+					// 		array('label'=>Yii::t('lang_uk', 'Notes'), 'url'=>array('/note')),
+					// 		array('label'=>Yii::t('lang_uk', 'Create'), 'url'=>array('/note/create')),
+					// 		array('label'=>Yii::t('lang_uk', 'Login'), 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
+					// 		array('label'=>'Logout ('.Yii::app()->user->name.')', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
+					// 	),
+					// ));
+			/mainmenu
+			.row
+				.span12
+					- if(isset($this->breadcrumbs))
+						-	$this->widget('bootstrap.widgets.TbBreadcrumbs',array('links'=>$this->breadcrumbs))
+			= $content
+			.clear
+			#footer
+				Copyright &copy; #{date('Y')} by My Company.
+				%br
+				All Rights Reserved.
+				%br
+				= Yii::powered()
+			/footer
+		/page
+	/body
+/html
